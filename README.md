@@ -4,10 +4,10 @@ Angular 4 component for [interpolated-charts](https://github.com/z3ut/interpolat
 
 ## Installation
 
-1. Install package and peer dependencies with [npm](https://www.npmjs.com)
+1. Install package with [npm](https://www.npmjs.com)
 
 ```
-npm install ng-interpolated-charts interpolated-charts @types/d3 --save
+npm install ng-interpolated-charts --save
 ```
 
 2. Import and register module
