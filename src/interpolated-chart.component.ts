@@ -27,6 +27,8 @@ export class InterpolatedChart implements OnChanges {
   @Input() interpolationMaxIterationCount: number;
   @Input() interpolationAccuracy: number;
   @Input() mouseMoveTimeTreshold: number;
+  @Input() xAxisDateFrom: Date;
+  @Input() xAxisDateTo: Date;
 
   /* line chart events */
   @Input() onMouseEnter: ({ x, y }: { x: number, y: number }) => {};
@@ -155,7 +157,9 @@ export class InterpolatedChart implements OnChanges {
       curve: this.curve,
       interpolationMaxIterationCount: this.interpolationMaxIterationCount,
       interpolationAccuracy: this.interpolationAccuracy,
-      mouseMoveTimeTreshold: this.mouseMoveTimeTreshold
+      mouseMoveTimeTreshold: this.mouseMoveTimeTreshold,
+      xAxisDateFrom: this.xAxisDateFrom,
+      xAxisDateTo: this.xAxisDateTo
     };
 
     const markersConfig: MarkersConfig = {

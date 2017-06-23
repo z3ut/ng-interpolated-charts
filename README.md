@@ -90,6 +90,8 @@ curve | curve
 interpolationMaxIterationCount | interpolationMaxIterationCount
 interpolationAccuracy | interpolationAccuracy
 mouseMoveTimeTreshold | mouseMoveTimeTreshold
+xAxisDateFrom | xAxisDateFrom
+xAxisDateTo | xAxisDateTo
 
 Mouse events:
 
@@ -111,6 +113,8 @@ backgroundColor | backgroundColor
 maxTimeRangeDifferenceToDraw | maxTimeRangeDifferenceToDraw
 xAxisTimeFormat | xAxisTimeFormat
 mouseMoveTimeTreshold | mouseMoveTimeTreshold
+xAxisDateFrom | xAxisDateFrom
+xAxisDateTo | xAxisDateTo
 
 Mouse events:
 

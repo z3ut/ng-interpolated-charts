@@ -24,6 +24,8 @@ export class InterpolatedStackBar implements OnChanges {
   @Input() maxTimeRangeDifferenceToDraw: number;
   @Input() xAxisTimeFormat: TickFormat;
   @Input() mouseMoveTimeTreshold: number;
+  @Input() xAxisDateFrom: Date;
+  @Input() xAxisDateTo: Date;
 
   /* stack bar events */
   @Input() onMouseEnter: ({ x, y }: { x: number, y: number }) => {};
@@ -138,7 +140,9 @@ export class InterpolatedStackBar implements OnChanges {
       margin: this.margin,
       maxTimeRangeDifferenceToDraw: this.maxTimeRangeDifferenceToDraw,
       xAxisTimeFormat: this.xAxisTimeFormat,
-      mouseMoveTimeTreshold: this.mouseMoveTimeTreshold
+      mouseMoveTimeTreshold: this.mouseMoveTimeTreshold,
+      xAxisDateFrom: this.xAxisDateFrom,
+      xAxisDateTo: this.xAxisDateTo
     };
 
     const tooltipConfig: TooltipConfig = {
