@@ -9,7 +9,7 @@ import {
 @Component({
   selector: 'interpolated-stack-bar',
   template: '',
-  styleUrls: ['./interpolated-stack-bar.component.css'],
+  styleUrls: ['../../interpolated-charts/dist/index.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class InterpolatedStackBar implements OnChanges {
