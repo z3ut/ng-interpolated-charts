@@ -19,7 +19,7 @@
     "url": "https://github.com/z3ut/ng-interpolated-charts.git"
   },
   "dependencies": {
-    "interpolated-charts": ">=1.2.2",
+    "interpolated-charts": ">=1.2.3",
     "@types/d3": "^4.9.0"
   },
   "devDependencies": {
