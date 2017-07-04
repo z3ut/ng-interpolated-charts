@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import {
   stackBar, chartEvents, verticalDivider, markers, tooltip,
   StackBarData, TickFormat, StackBarConfig, StackBarPointData,
-  VerticalDividerConfig, TooltipConfig, MarkersConfig
+  StackBarEventData, VerticalDividerConfig, TooltipConfig, MarkersConfig
 } from 'interpolated-charts';
 
 @Component({
@@ -20,6 +20,7 @@ export class InterpolatedStackBar implements OnChanges {
   @Input() width: number;
   @Input() height: number;
   @Input() margin: { top: number, right: number, bottom: number, left: number };
+  @Input() marginBetweenStacks: number;
   @Input() backgroundColor: string;
   @Input() maxTimeRangeDifferenceToDraw: number;
   @Input() xAxisTimeFormat: TickFormat;
@@ -38,8 +39,8 @@ export class InterpolatedStackBar implements OnChanges {
   @Input() horizontalMouseMargin: number;
   @Input() verticalBorderMargin: number;
   @Input() headerFormatter: (date: Date) => string;
-  @Input() topicFormatter: (data: StackBarPointData) => string;
-  @Input() valueFormatter: (data: StackBarPointData) => string = () => '';
+  @Input() topicFormatter: (data: StackBarEventData) => string = data => data.name;
+  @Input() valueFormatter: (data: StackBarEventData) => string = data => data.value !== undefined ? String(data.value) : 'No data';
   @Input() tooltipSort: (a, b) => number;
 
   /* stack bar defaults */
@@ -138,6 +139,7 @@ export class InterpolatedStackBar implements OnChanges {
       width: this.width,
       height: this.height,
       margin: this.margin,
+      marginBetweenStacks: this.marginBetweenStacks,
       maxTimeRangeDifferenceToDraw: this.maxTimeRangeDifferenceToDraw,
       xAxisTimeFormat: this.xAxisTimeFormat,
       mouseMoveTimeTreshold: this.mouseMoveTimeTreshold,

@@ -2,7 +2,7 @@ import { Component, OnChanges, ViewEncapsulation, Input, ElementRef } from '@ang
 import * as d3 from 'd3';
 import {
   line, chartEvents, verticalDivider, markers, tooltip,
-  PathDataSet, TickFormat, ChartLinePointData, LineChartConfig,
+  PathDataSet, TickFormat, PointData, LineChartConfig,
   VerticalDividerConfig, TooltipConfig, MarkersConfig
 } from 'interpolated-charts';
 
@@ -33,25 +33,25 @@ export class InterpolatedChart implements OnChanges {
   /* line chart events */
   @Input() onMouseEnter: ({ x, y }: { x: number, y: number }) => {};
   @Input() onMouseLeave: ({ x, y }: { x: number, y: number }) => {};
-  @Input() onMouseMove: ({ x, y, selectedDate, data }: { x: number, y: number, selectedDate: Date, data: ChartLinePointData[] }) => {};
-  @Input() onMouseClick: ({ x, y, selectedDate, data }: { x: number, y: number, selectedDate: Date, data: ChartLinePointData[] }) => {};
+  @Input() onMouseMove: ({ x, y, selectedDate, data }: { x: number, y: number, selectedDate: Date, data: PointData[] }) => {};
+  @Input() onMouseClick: ({ x, y, selectedDate, data }: { x: number, y: number, selectedDate: Date, data: PointData[] }) => {};
 
   /* marker plugin params */
-  @Input() cx: (data: ChartLinePointData) => number;
-  @Input() cy: (data: ChartLinePointData) => number;
-  @Input() radius: (data: ChartLinePointData) => number;
-  @Input() fill: (data: ChartLinePointData) => string;
-  @Input() stroke: (data: ChartLinePointData) => string;
-  @Input() strokeWidth: (data: ChartLinePointData) => number;
-  @Input() markerSort: (a: ChartLinePointData, b: ChartLinePointData) => number;
+  @Input() cx: (data: PointData) => number;
+  @Input() cy: (data: PointData) => number;
+  @Input() radius: (data: PointData) => number;
+  @Input() fill: (data: PointData) => string;
+  @Input() stroke: (data: PointData) => string;
+  @Input() strokeWidth: (data: PointData) => number;
+  @Input() markerSort: (a: PointData, b: PointData) => number;
 
   /* tooltip plugin params */
   @Input() tooltipWidth: number;
   @Input() horizontalMouseMargin: number;
   @Input() verticalBorderMargin: number;
   @Input() headerFormatter: (date: Date) => string;
-  @Input() topicFormatter: (data: ChartLinePointData) => string;
-  @Input() valueFormatter: (data: ChartLinePointData) => string;
+  @Input() topicFormatter: (data: PointData) => string;
+  @Input() valueFormatter: (data: PointData) => string;
   @Input() tooltipSort: (a, b) => number;
 
   /* line chart defaults */
