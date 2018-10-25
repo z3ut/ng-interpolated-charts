@@ -9,7 +9,7 @@ import {
 @Component({
   selector: 'interpolated-chart',
   template: '',
-  styleUrls: ['../../interpolated-charts/dist/index.css'],
+  styleUrls: ['../../../../node_modules/interpolated-charts/dist/index.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class InterpolatedChart implements OnChanges {
@@ -193,6 +193,6 @@ export class InterpolatedChart implements OnChanges {
       markersConfig,
       tooltipConfig,
       verticalDividerConfig
-    }
+    };
   }
 }

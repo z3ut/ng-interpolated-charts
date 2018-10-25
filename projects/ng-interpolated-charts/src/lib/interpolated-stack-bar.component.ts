@@ -1,63 +1,55 @@
 import { Component, OnChanges, ViewEncapsulation, Input, ElementRef } from '@angular/core';
 import * as d3 from 'd3';
 import {
-  bar, chartEvents, verticalDivider, tooltip,
-  PathDataSet, TickFormat, PointData, BarChartConfig,
-  VerticalDividerConfig, TooltipConfig, MarkersConfig
+  stackBar, chartEvents, verticalDivider, tooltip,
+  StackBarData, TickFormat, StackBarConfig, StackBarPointData,
+  StackBarEventData, VerticalDividerConfig, TooltipConfig
 } from 'interpolated-charts';
 
 @Component({
-  selector: 'interpolated-bar-chart',
+  selector: 'interpolated-stack-bar',
   template: '',
-  styleUrls: ['../../interpolated-charts/dist/index.css'],
+  styleUrls: ['../../../../node_modules/interpolated-charts/dist/index.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class InterpolatedBarChart implements OnChanges {
+export class InterpolatedStackBar implements OnChanges {
 
-  @Input() data: PathDataSet[];
+  @Input() data: StackBarData[];
 
-  /* bar chart params */
+  /* stack bar params */
   @Input() width: number;
   @Input() height: number;
   @Input() margin: { top: number, right: number, bottom: number, left: number };
-  @Input() setStackWidth: (chartWidth:number, numberOfBars: number) => number;
+  @Input() marginBetweenStacks: number;
+  @Input() backgroundColor: string;
   @Input() maxTimeRangeDifferenceToDraw: number;
-  @Input() stackTimeDiapason: number;
   @Input() xAxisTimeFormat: TickFormat;
-  @Input() yAxisValueFormat: TickFormat;
+  @Input() mouseMoveTimeTreshold: number;
   @Input() xAxisDateFrom: Date;
   @Input() xAxisDateTo: Date;
-  @Input() yAxisValueFrom: number;
-  @Input() yAxisValueTo: number;
 
-  /* bar chart events */
+  /* stack bar events */
   @Input() onMouseEnter: ({ x, y }: { x: number, y: number }) => {};
   @Input() onMouseLeave: ({ x, y }: { x: number, y: number }) => {};
-  @Input() onMouseMove: ({ x, y, selectedDate, data }: { x: number, y: number, selectedDate: Date, data: PointData[] }) => {};
-  @Input() onMouseClick: ({ x, y, selectedDate, data }: { x: number, y: number, selectedDate: Date, data: PointData[] }) => {};
-
-  /* marker plugin params */
-  @Input() cx: (data: PointData) => number;
-  @Input() cy: (data: PointData) => number;
-  @Input() radius: (data: PointData) => number;
-  @Input() fill: (data: PointData) => string;
-  @Input() stroke: (data: PointData) => string;
-  @Input() strokeWidth: (data: PointData) => number;
-  @Input() markerSort: (a: PointData, b: PointData) => number;
+  @Input() onMouseMove: ({ x, y, selectedDate, data }: { x: number, y: number, selectedDate: Date, data: StackBarPointData[] }) => {};
+  @Input() onMouseClick: ({ x, y, selectedDate, data }: { x: number, y: number, selectedDate: Date, data: StackBarPointData[] }) => {};
 
   /* tooltip plugin params */
   @Input() tooltipWidth: number;
   @Input() horizontalMouseMargin: number;
   @Input() verticalBorderMargin: number;
   @Input() headerFormatter: (date: Date) => string;
-  @Input() topicFormatter: (data: PointData) => string;
-  @Input() valueFormatter: (data: PointData) => string;
+  @Input() topicFormatter: (data: StackBarEventData) => string = data => data.name;
+  @Input() valueFormatter: (data: StackBarEventData) => string = data => data.value !== undefined ? String(data.value) : 'No data';
   @Input() tooltipSort: (a, b) => number;
 
-  /* line chart defaults */
-  chartDefaultHeight = 500;
+  /* stack bar defaults */
+  chartDefaultHeight = 120;
   chartDefaultWidth = 700;
   defaultMargin = { top: 20, right: 30, bottom: 40, left: 40 };
+
+  /* plugin defaults */
+  tooltipDefaultVerticalBorderMargin = -10;
 
   host;
 
@@ -80,11 +72,11 @@ export class InterpolatedBarChart implements OnChanges {
 
     this.host
       .append('div')
-      .attr('class', 'chart');
+      .attr('class', 'stack-bar');
   }
 
   initializeChart() {
-    const { barChartConfig, tooltipConfig,
+    const { stackBarChartConfig, tooltipConfig,
       verticalDividerConfig } = this.createConfig();
 
     this.clearHost();
@@ -92,7 +84,7 @@ export class InterpolatedBarChart implements OnChanges {
     const tooltipPlugin = tooltip(tooltipConfig);
     const verticalDividerPlugin = verticalDivider(verticalDividerConfig);
 
-    const barChart = bar(barChartConfig)
+    const lineChart = stackBar(stackBarChartConfig)
       .on(chartEvents.chartMouseEnter, (options) => {
         verticalDividerPlugin.show();
 
@@ -122,15 +114,15 @@ export class InterpolatedBarChart implements OnChanges {
         }
       });
 
-    const chartContainer = this.host.select('.chart');
-    chartContainer.datum(this.data).call(barChart);
+    const chartContainer = this.host.select('.stack-bar');
+    chartContainer.datum(this.data).call(lineChart);
 
-    const metadataContainer = this.host.select('.chart .metadata-container');
+    const metadataContainer = this.host.select('.stack-bar .metadata-container');
     metadataContainer.datum([]).call(verticalDividerPlugin);
     metadataContainer.datum([]).call(tooltipPlugin);
   }
 
-  createConfig(): { barChartConfig: BarChartConfig,
+  createConfig(): { stackBarChartConfig: StackBarConfig,
       tooltipConfig: TooltipConfig, verticalDividerConfig: VerticalDividerConfig} {
 
     const chartHeight = this.height || this.chartDefaultHeight;
@@ -143,29 +135,16 @@ export class InterpolatedBarChart implements OnChanges {
     const innerChartHeight = chartHeight - marginTop - marginBottom;
     const innerChartWidth = chartWidth - marginLeft - marginRight;
 
-    const barChartConfig: BarChartConfig = {
+    const stackBarChartConfig: StackBarConfig = {
       width: this.width,
       height: this.height,
       margin: this.margin,
-      setStackWidth: this.setStackWidth,
+      marginBetweenStacks: this.marginBetweenStacks,
       maxTimeRangeDifferenceToDraw: this.maxTimeRangeDifferenceToDraw,
-      stackTimeDiapason: this.stackTimeDiapason,
       xAxisTimeFormat: this.xAxisTimeFormat,
-      yAxisValueFormat: this.yAxisValueFormat,
+      mouseMoveTimeTreshold: this.mouseMoveTimeTreshold,
       xAxisDateFrom: this.xAxisDateFrom,
-      xAxisDateTo: this.xAxisDateTo,
-      yAxisValueFrom: this.yAxisValueFrom,
-      yAxisValueTo: this.yAxisValueTo,
-    };
-
-    const markersConfig: MarkersConfig = {
-      cx: this.cx,
-      cy: this.cy,
-      radius: this.radius,
-      fill: this.fill,
-      stroke: this.stroke,
-      strokeWidth: this.strokeWidth,
-      sort: this.markerSort
+      xAxisDateTo: this.xAxisDateTo
     };
 
     const tooltipConfig: TooltipConfig = {
@@ -173,7 +152,10 @@ export class InterpolatedBarChart implements OnChanges {
       chartWidth: innerChartWidth,
       tooltipWidth: this.tooltipWidth,
       horizontalMouseMargin: this.horizontalMouseMargin,
-      verticalBorderMargin: this.verticalBorderMargin,
+      // margin can be 0
+      verticalBorderMargin: this.verticalBorderMargin == null ?
+        this.tooltipDefaultVerticalBorderMargin :
+        this.verticalBorderMargin,
       headerFormatter: this.headerFormatter,
       topicFormatter: this.topicFormatter,
       valueFormatter: this.valueFormatter,
@@ -185,9 +167,9 @@ export class InterpolatedBarChart implements OnChanges {
     };
 
     return {
-      barChartConfig,
+      stackBarChartConfig,
       tooltipConfig,
       verticalDividerConfig
-    }
+    };
   }
 }

@@ -1,13 +1,13 @@
 # Angular Interpolated Charts
 
-Angular 4 component for [interpolated-charts](https://github.com/z3ut/interpolated-charts)
+Angular 2 component for [interpolated-charts](https://github.com/z3ut/interpolated-charts)
 
 ## Installation
 
 1. Install package with [npm](https://www.npmjs.com)
 
 ```
-npm install ng-interpolated-charts --save
+npm install ng-interpolated-charts interpolated-charts --save
 ```
 
 2. Import and register module
@@ -148,3 +148,13 @@ headerFormatter | headerFormatter
 topicFormatter | topicFormatter
 valueFormatter | valueFormatter
 **tooltipSort** | sort
+
+## Development
+
+[Library creation docs](https://github.com/angular/angular-cli/wiki/stories-create-library)
+
+Library location in project - projects/ng-interpolated-charts.
+
+Build library (with ng-packagr to Angular Package Format): ```ng build ng-interpolated-charts```
+
+Publish to npm: ```npm publish projects/ng-interpolated-charts```
